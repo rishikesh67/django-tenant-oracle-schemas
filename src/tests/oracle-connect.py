@@ -3,6 +3,8 @@ import os
 import glob
 from drop_tables import drop_tables
 from delete_migrations import delete_migrations
+from makemigrations_and_migrate import makemigrations_and_migrate
+from show_tables import show_tables
 
 # ---- CONFIGURATIONS -> CHANGE THIS PART ----
 CHECK_DB = False  # If database should be dropped or not
@@ -38,6 +40,25 @@ def main():
 	# cursor.execute(query)
 
 
+	SHOW_TABLES_QUERY = """SELECT
+	  table_name, owner
+	FROM
+	  dba_tables
+	WHERE
+	  owner='CFDADMIN'
+	ORDER BY
+	  owner, table_name"""
+
+	mm_commands = [
+		"python3 manage.py makemigrations users",
+		"python3 manage.py makemigrations tenants",
+		"python3 manage.py migrate"
+	]
+
+	project_root = '/Users/hygull/Projects/Python3/DjangoTenantOracleSchemas/django-tenant-oracle-schemas/src'
+
+
+
 	if len(sys.argv) > 2:
 		print(sys.argv)
 		investor_id = sys.argv[2]
@@ -56,12 +77,21 @@ def main():
 	INVESTORPROFILE_QUERY = """SELECT * FROM INVESTOR_INVESTORPROFILE"""
 
 	if operation_type == '1':
-		drop_tables(DROP_TABLES_QUERY)
+		drop_tables(con, DROP_TABLES_QUERY)
 	elif operation_type == '2':
 		print('Deleting migrations')
 		delete_migrations()
+	elif operation_type == '3':
+		print(__file__)
+		print(os.path.abspath(__file__))
+		this_dir = os.path.dirname(os.path.abspath(__file__))
+		makemigrations_and_migrate(project_root, this_dir, mm_commands)
+		# return
+	elif operation_type == '4':
+		show_tables(con, SHOW_TABLES_QUERY)
 
 
+	con.close()
 
 if __name__ == "__main__":
 	main()

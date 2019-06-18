@@ -6,9 +6,9 @@ class TenantAdmin(admin.ModelAdmin):
 	list_display = [
 		'pk', # tenant.Tenant.pk: (fields.E003) 'pk' is a reserved word that cannot be used as a field name.
 		'id',
-		'name',
-		'created_at',
-		'updated_at'
+		'tenant_name',
+		# 'created_at',
+		# 'updated_at'
 	]
 
 
