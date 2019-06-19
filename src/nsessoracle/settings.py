@@ -25,7 +25,7 @@ SECRET_KEY = 'wr#!$0ruyhj&$lmzdju-hge28@+@3(vy&!c0c@-_gqjx)12c2+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'tenants.apps.TenantsConfig',
     'users.apps.UsersConfig',
     'tests.apps.TestsConfig',
+
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -51,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'nsessoracle.middlewares.tenant_middleware.TenantMiddleware',
 ]
 
 ROOT_URLCONF = 'nsessoracle.urls'
