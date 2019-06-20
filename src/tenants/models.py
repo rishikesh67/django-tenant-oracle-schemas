@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 import logging
+from nsessoracle.utils import get_connection 
 
 logger = logging.getLogger(__name__)
 
@@ -15,18 +16,19 @@ class Tenant(models.Model):
 		return str(self.pk) +  ' ~ ' + self.tenant_name.upper()
 
 	def save(self, *args, **kwargs):
+		logger.info('Started: creating tenant')
 		tenant = self.tenant_name
 		password = 'Password123'
 		username = 'CFDADMIN'
 
-		logger.info('TENANT - ', tenant, ' | PASSWORD - ', password)
+		logger.log(logging.INFO, 'TENANT - ', tenant, ' | PASSWORD - ', password)
 
 		commands = [
 			# GRANT CREATE SESSION TO CFDADMIN;
 			f"GRANT CREATE SESSION TO {username}",
 
 			# CREATE SCHEMA schema1 AUTHORIZATION cfdamdin;
-			"CREATE USER {tenant} IDENTIFIED BY {password}".format(tenant=tenant, password=password)
+			"CREATE USER {tenant} IDENTIFIED BY {password}".format(tenant=tenant, password=password),
 		
 			# GRANT CONNECT TO SCHEMA1;
 			f"GRANT CONNECT TO {tenant}"
@@ -44,35 +46,29 @@ class Tenant(models.Model):
 			  owner, table_name"""
 
 		try:
-			import cx_Oracle;
-			DBNAME = "orcl"
-			DBUSER = 'cfdadmin'
-			DBPASSWORD = 'pandora123$321#'
-			DBHOST = 'cfduat.c0be6oyqiohf.ap-south-1.rds.amazonaws.com'
-
-			# postgresql://cfdadmin@cfduat.c0be6oyqiohf.ap-south-1.rds.amazonaws.com/orcl
-			DBPATH = '{username}/{password}@{host}/{db_name}'.format(
-																	username=DBUSER, 
-																	password=DBPASSWORD, host=DBHOST,
-			                                                        db_name=DBNAME
-			                                                    )
-			# https://cx-oracle.readthedocs.io/en/latest/installation.html
-			con = cx_Oracle.connect(DBUSER, DBPASSWORD, f"{DBHOST}/{DBNAME}")
+			con = get_connection()
 			cursor = con.cursor()
 
+			# SAVE POINT
+			cursor.execute('SAVEPOINT NSE_ORACLE_SAVEPOINT')
+			logger.warning('CREATED SAVEPOINT')
+
 			for index, command in enumerate(commands):
-				logger.info('(1.%s) EXCECUTING \'' + command + '\'' % (index + 1))
+				# logger.log(logging.INFO, '(1.%s) EXCECUTING \'' + command + '\'' % (index + 1))
+				print('#' * 40)
 				cursor.execute(command)
 
 			cursor.execute(SHOW_TABLES_QUERY)
 			# Otherwise insertion will fail
 			# ALTER USER SCHEMA1 quota unlimited on users;
-			query = SCHEMA_TABLE_QUOTA_GRANT_QUERY.format(tenant=tenant)
 			for index, tup2 in enumerate(cursor):
 				# tup2 -> ('USERS_USER', 'CFDADMIN')
-				logging.info(table)
+				query = SCHEMA_TABLE_QUOTA_GRANT_QUERY.format(tenant=tenant, table_name=tup2[0])
+				logger.warning('-----' + query)
+				# logger.info('')
 				query = query.format(tup2[0])
-				logging.info('(2.%s) EXCECUTING \'' + query + '\'' % index)
+				# logging.log(logger.WARNING, '(2.%s) EXCECUTING \'' + query + '\'' % index)
+				print('%' * 40)
 				cursor.execute(query)
 
 			cursor.close()
@@ -81,10 +77,17 @@ class Tenant(models.Model):
 		except Exception as error:
 			logger.warning(str(error))
 			logger.warning('This object will be unsaved from the database')
+
+			# https://stackoverflow.com/questions/16632243/use-of-rollback-command-in-oracle
+			con.execute('ROLLBACK TO NSE_ORACLE_SAVEPOINT') # Rollback
+			logger.log('CHANGES ARE ROLLED BACK')
+			# import traceback
+			# traceback.print_tb(error)
 			return
 		finally:
-			# Close the database connection
-			logger.info('Successfully closed recently opened connection')
+			# Close the database connection 
+			# logger.info('message') -> won't display the message
+			logger.warning('Successfully closed recently opened connection')
 			con.close()
 
 
