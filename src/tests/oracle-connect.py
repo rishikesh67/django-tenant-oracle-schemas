@@ -22,9 +22,15 @@ DBPATH = '{username}/{password}@{host}/{db_name}'.format(
 														password=DBPASSWORD, host=DBHOST,
                                                         db_name=DBNAME
                                                     )
+
+# DBUSER = 'cfd'
+# DBPASSWORD = 'Password123'
+
+
 # https://cx-oracle.readthedocs.io/en/latest/installation.html
 con = cx_Oracle.connect(DBUSER, DBPASSWORD, f"{DBHOST}/{DBNAME}")
 
+print('Connection ', con)
 
 def main():
 	import sys
@@ -52,6 +58,7 @@ def main():
 	mm_commands = [
 		"python3 manage.py makemigrations users",
 		"python3 manage.py makemigrations tenants",
+		'python3 manage.py makemigrations tests'
 		"python3 manage.py migrate"
 	]
 
@@ -94,8 +101,8 @@ def main():
 	con.close()
 
 if __name__ == "__main__":
-	main()
-
+	# main()
+	pass
 
 """
 (venv3.6.7) ➜  tests git:(master) ✗ python3 oracle-connect.py

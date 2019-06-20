@@ -11,12 +11,12 @@ class TenantMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        logger.info('Inside TenantMiddleware')
-        logger.info(request)
+        logger.debug('Inside TenantMiddleware')
+        logger.debug(request)
 
         # --- BEFORE ---
         is_main_domain, tenant = get_tenant(request)
-        logger.info('TENANT - ', tenant)
+        logger.debug('TENANT - ' + tenant)
 
         if tenant:
             if tenant != 'nseinvestease':
@@ -27,7 +27,7 @@ class TenantMiddleware:
                     # tenant -> schema
                     # ALTER SESSION SET CURRENT_SCHEMA = SCHEMA2;
                     SET_SCHEMA_QUERY = 'ALTER SESSION SET CURRENT_SCHEMA = {tenant}'.format(tenant=tenant)
-                    logger.log(logging.ERROR, SET_SCHEMA_QUERY)
+                    logger.debug( SET_SCHEMA_QUERY)
                     cursor.execute(SET_SCHEMA_QUERY)
                 else:
                     if not is_main_domain:
