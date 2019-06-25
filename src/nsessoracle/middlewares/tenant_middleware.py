@@ -5,6 +5,7 @@ from users.models import User
 import logging
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 class TenantMiddleware:
     def __init__(self, get_response):
@@ -17,26 +18,43 @@ class TenantMiddleware:
         # --- BEFORE ---
         is_main_domain, tenant = get_tenant(request)
         logger.debug('TENANT - ' + tenant)
+        logger.debug('IS MAIN DOMAIN', is_main_domain)
+        print(is_main_domain, tenant, type(tenant))
+
+        request.is_main_domain = is_main_domain
+        request.is_local_domain = False
 
         if tenant:
-            if tenant != 'nseinvestease':
-                tenant_obj = Tenant.objects.filter(tenant_name=tenant).first()
-                if tenant_obj:
-                    con = get_connection()
-                    cursor = con.cursor()
-                    # tenant -> schema
-                    # ALTER SESSION SET CURRENT_SCHEMA = SCHEMA2;
-                    SET_SCHEMA_QUERY = 'ALTER SESSION SET CURRENT_SCHEMA = {tenant}'.format(tenant=tenant)
-                    logger.debug( SET_SCHEMA_QUERY)
-                    cursor.execute(SET_SCHEMA_QUERY)
+            print('ok')
+            if tenant != 'nseinvestease' and tenant != '127':
+                print('here')
+                request.tenant = Tenant.objects.filter(tenant_name=tenant).first()
+                print(request.tenant)
+            else:
+                print('here 2')
+                if request.is_main_domain is not True and tenant == '127':
+                    print('yes')
+                    request.is_local_domain = True
                 else:
-                    if not is_main_domain:
-                        return JsonResponse({
-                            'message': 'Could not find this tenant ' + tenant,
-                            'status': 400
-                        })
+                    print('no')
+
+                request.tenant = None
+
+        if is_main_domain:
+            if not request.path.startswith('/tests/register') and (not request.path.startswith('/tests/users/')) and (not request.path == '/'):
+                return JsonResponse({
+                    'status': 400,
+                    "message": 'main domain is only allowed to register tenants not other activities'
+                })
+        elif not tenant:
+            return JsonResponse({
+                'status': 400,
+                "message": 'Could not find this tenant'
+            })
+
+        print('Tenant is set as ', request.tenant, request.is_local_domain, request.is_main_domain)
 
         response = self.get_response(request)
-        # --- AFTER ---
 
+        # --- AFTER ---
         return response

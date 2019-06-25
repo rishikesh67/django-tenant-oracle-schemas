@@ -8,7 +8,6 @@ def show_tables(con, query):
 
 	cursor.close()
 
-
 	"""
 		(venv3.6.7) ➜  tests git:(master) ✗ python oracle-connect.py 4
 		('AUTH_GROUP', 'CFDADMIN')

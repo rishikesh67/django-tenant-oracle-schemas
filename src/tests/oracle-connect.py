@@ -58,7 +58,7 @@ def main():
 	mm_commands = [
 		"python3 manage.py makemigrations users",
 		"python3 manage.py makemigrations tenants",
-		'python3 manage.py makemigrations tests'
+		'python3 manage.py makemigrations tests',
 		"python3 manage.py migrate"
 	]
 
@@ -87,7 +87,7 @@ def main():
 		drop_tables(con, DROP_TABLES_QUERY)
 	elif operation_type == '2':
 		print('Deleting migrations')
-		delete_migrations()
+		delete_migrations(pycaches=True)
 	elif operation_type == '3':
 		print(__file__)
 		print(os.path.abspath(__file__))
@@ -101,8 +101,8 @@ def main():
 	con.close()
 
 if __name__ == "__main__":
-	# main()
-	pass
+	main()
+	# pass
 
 """
 (venv3.6.7) ➜  tests git:(master) ✗ python3 oracle-connect.py

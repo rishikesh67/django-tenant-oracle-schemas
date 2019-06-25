@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
+from users.views import UserLogin
 
 urlpatterns = [
+    path('', UserLogin.as_view(), name='users-login'),
     path('admin/', admin.site.urls),
-    re_path(r'^tests/', include('tests.urls', namespace='tests'))
+    re_path(r'^tests/', include('tests.urls', namespace='tests')),
+    re_path(r'^tests/users/', include('users.urls', namespace='users'))
+
 ]
