@@ -45,18 +45,19 @@ class TenantMiddleware:
 
         if is_main_domain:
             print('Is main domain')
-            if not request.path.startswith('/tests/register') and (not request.path.startswith('/tests/users/')) and (not request.path == '/'):
+            if not request.path.startswith('/tests/register') and (not request.path.startswith('/tests/users/')) and (not (request.path == '/')):
                 return JsonResponse({
                     'status': 400,
                     "message": 'main domain is only allowed to register tenants not other activities'
                 })
         elif not request.tenant:
-            # print('Not a tenant')
-            
-            # return JsonResponse({
-            #     'status': 400,
-            #     "message": 'Could not find this tenant'
-            # })
+            print('Not a tenant')
+
+            return JsonResponse({
+                'status': 400,
+                "message": 'Could not find this tenant'
+            })
+
 
         print('Tenant is set as ', request.tenant, request.is_local_domain, request.is_main_domain)
 

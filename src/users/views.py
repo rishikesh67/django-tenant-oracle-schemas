@@ -8,6 +8,8 @@ from rest_framework.views import APIView
 from datetime import datetime
 import jwt
 from django.http import JsonResponse
+from tenants.models import Tenant
+
 
 class UsersView(APIView):
     def post(self, request, *args, **kwargs):
@@ -61,8 +63,20 @@ class UsersView(APIView):
 class UserLogin(APIView):
     def post(self, request, *args, **kwargs):
         status, message, response = 400, 'Successfully logged in', {}
+        data = request.data
+        print(data)
+        password = data.get('password')
+        arn_code = data.get('arn_code')
+        appln_id = data.get('appln_id')
+        print(password, arn_code, appln_id)
+        print('Set tenant')
+        # tenant = Tenant.objects.filter(tenant_name=request.tenant).first(tenant_name=request.tenant.tenant_name)
 
-        print(request.data)
+        # if not request.tenant:
+        #     return Response({
+        #         'status': status,
+        #         'message': 'Could not find this tenant'
+        #     })
         
         # clients = Client.objects.filter(schema_name=request.data.get("tenant"))
         token = jwt.encode({
