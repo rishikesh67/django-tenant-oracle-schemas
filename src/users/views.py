@@ -144,4 +144,23 @@ class TenantSelect(APIView):
         }
 
         print('Tenants ', tenants)
-        return render(request, 'tenants/tenant_select.html', context)        
+        return render(request, 'tenants/tenant_select.html', context)   
+
+
+class UserRegister(APIView):
+    def post(self, request, *args, **kwargs):
+        message = 'Successfully registered'
+        status = 200
+        response = {}
+        data = request.data
+        print(data)
+
+        response['status'] = status
+        response['message'] = message
+        return Response(response)
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, 'tenants/register.html', context)   
+
+

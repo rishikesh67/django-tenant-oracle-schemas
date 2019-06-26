@@ -28,34 +28,40 @@
         <center>
           <img src="https://www.nseindia.com/global/resources/images/NSE_reverse@4x-100.jpg" class="img img-responsive img-rounded" id='nse-image'>
         </center>
-        <h3>NseInvestEase Login</h3>
+        <h3>Register on NseInvestEase</h3>
         <hr>
         
-        <div class="alert alert-success alert-dismissible">
+        <div class="alert alert-info alert-dismissible">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Welcome!</strong> Login to <b>Corporate FD</b> and other MF platforms
+          <strong>Welcome!</strong> Register a tenant and invest on <b>MF platforms</b>
         </div>
 
-        <form action="#" onsubmit="return login(event)">
+        <form action="#" onsubmit="return register(event)">
           {% csrf_token %}
           <div class="form-group">
-            <label for="arn_code">ARN CODE:</label>
-            <input type="text" class="form-control" id="arn_code" placeholder="Enter ARN CODE" name="name" value="ARN-20709" data-toggle='tooltip' title='ARN-20709'>
+            <label for="tenant_name">TENANT NAME:</label>
+            <input type="text" class="form-control" id="tenant_name" placeholder="Enter Tenant name" name="name" value="cfd" data-toggle='tooltip' title='TENANT NAME'>
+          </div>
+
+          <div class="form-group">
+            <label for="email">EMAIL:</label>
+            <input type="text" class="form-control" id="email" placeholder="Enter email id" name="name" value="cfd@gmail.com" data-toggle='tooltip' title='EMAIL'>
           </div>
           
           <div class="form-group">
-            <label for="appln_id">APPLN ID:</label>
-            <input type="text" class="form-control" id="appln_id" placeholder="Enter Appln Id" name="appln_id" value="TEST854" data-toggle='tooltip' title='APPLN ID'>
+            <label for="contact">CONTACT:</label>
+            <input type="tel" class="form-control" id="contact" placeholder="Enter 10 digits contact number" name="contact" value="7975797484" data-toggle='tooltip' title='CONTACT' maxlength="10">
           </div> 
          
           <div class="form-group">
-            <label for="password">Password:</label>
+            <label for="password">PASSWORD:</label>
             <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" value="test$147" data-toggle='tooltip' title='PASSWORD'>
           </div>
-          <div class="checkbox">
+
+<!--           <div class="checkbox">
             <label><input type="checkbox" name="remember" data-toggle='tooltip' title='Remember me'> Remember me</label>
-          </div>
-          <button type="submit" class="btn btn-success btn-block" data-toggle='tooltip' title='Login to MF'>Login</button>
+          </div> -->
+          <button type="submit" class="btn btn-success btn-block" data-toggle='tooltip' title='Login to MF'>Register</button>
         </form>  
       </div>
 
@@ -77,15 +83,18 @@
 
 {% block js_body %}
   <script type="text/javascript">
-    function login(event) {
+    function register(event) {
+        // alert('ok')
         event.preventDefault();
 
         let password = $("#password").val()
-        let arn_code = $("#arn_code").val()
-        let appln_id = $("#appln_id").val()
+        let email = $("#email").val()
+        let contact = $("#contact").val()
+        let tenant_name = $('#tenant_name').val()
+
         let csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
-        console.log(password, arn_code, appln_id);
-        // alert(csrfmiddlewaretoken)
+        console.log(password, email, contact, tenant_name);
+        alert(csrfmiddlewaretoken)
 
         $.ajax({
            type: "POST",
@@ -97,13 +106,14 @@
            crossDomain: true,
            dataType: "json",
            data: JSON.stringify({
-            arn_code,
+            email,
             password,
-            appln_id
+            tenant_name,
+            contact
            }),
            success: (response, textStatus, jQxhr) => {
               console.log(response, textStatus, jQxhr)
-            
+              alert("success");
               if(response.status == 200) {
                 let data = response.data;
 
@@ -116,36 +126,30 @@
                 //   return
                 // }
 
+
                 swal({
                   icon: 'success',
                   title: "Success!!!",
-                  text: response.message,
+                  text: 'Click OK to login or CANCEL to stay',
                   buttons: true
                 })
                 .then((okay) => {
                     if(okay) {
-                        url = '/tests/users/select/tenant'
+                        url = '/'
                         console.log("Redirect to Url => ", url);
                         location.href = url
                         console.log("OK");
+                    } else {
+                      location.reload()
                     }
                 })
               } else {
-                  // alert(response.message)
-                  swal({
-                    icon: 'warning',
-                    title: 'Sorry!!!',
-                    text: 'Please check credentials, ' + response.message
-                  });
+                alert(response.message)
               }
            },
            error: (jQxhr, textStatus, errorThrown) => {
               console.log("Error", jQxhr, textStatus, errorThrown);
-              swal({
-                icon: 'warning',
-                title: 'Sorry!!!',
-                text: 'Something bad happened, ' + errorThrown
-              });
+              alert('Something bad happened, ' + errorThrown);
            }
         })
 
