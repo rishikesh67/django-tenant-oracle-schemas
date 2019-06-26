@@ -15,14 +15,16 @@
 					<div class="row">
 						{% for tenant in tenants %}
 
-								<div class="col-sm-6 col-md-4" data-toggle='tooltip' title='Platform {{tenant.tenant_name}}'>
+								<div class="col-sm-6 col-md-4 card-tenant" data-toggle='tooltip' title='Platform {{tenant.tenant_name}}'>
 
 									<div class="thumbnail">
-
 										{% if forloop.counter|divisibleby:2 %}
 									  		<img src="https://img.icons8.com/ultraviolet/344/text-height.png" alt="Tenant {{tenant.pk}}">
-									  	{% else %}
+									  	{% elif forloop.counter|divisibleby:3 %}
 									  		<img src="https://img.icons8.com/ultraviolet/344/oil-offshore-rig.png" alt="Tenant {{tenant.pk}}">
+									  	{% else %}
+									  		<img src="https://img.icons8.com/dusk/344/cash-.png" alt="Tenant {{tenant.pk}}">
+									  	
 									  	{% endif %}
 
 									  <div class="caption">
@@ -31,10 +33,8 @@
 									    <p>Visit and invest on MF through <b>{{tenant.tenant_name}}</b></p>
 									    
 									    <p data-toggle="tooltip" title="Visit {{tenant.tenant_name}}">
-									   
-									    		<a href="http://{{tenant.tenant_name}}.nseinvestease" class="btn btn-success btn-block" role="button">Visit {{tenant.tenant_name}}</a>
-									   
-									    	
+									    	<a href="http://{{tenant.tenant_name}}.nseinvestease:{{port}}" class="btn btn-success btn-block btn-lg" role="button">Visit {{tenant.tenant_name}}
+									    	</a>
 									    </p>
 									  </div>
 									</div>

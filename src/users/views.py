@@ -9,6 +9,7 @@ from datetime import datetime
 import jwt
 from django.http import JsonResponse
 from tenants.models import Tenant
+from django.conf import settings
 
 
 class UsersView(APIView):
@@ -139,10 +140,12 @@ class TenantSelect(APIView):
     def get(self, request, *args, **kwargs):
 
         tenants = Tenant.objects.all()
-        context = {
-            'tenants': tenants
-        }
+        port = settings.REDIRECT_PORT
 
+        context = {
+            'tenants': tenants,
+            'port': port
+        }
         print('Tenants ', tenants)
         return render(request, 'tenants/tenant_select.html', context)   
 
