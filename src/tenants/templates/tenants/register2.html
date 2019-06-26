@@ -12,7 +12,8 @@
     #nse-image {
       height: 50px;
     }
-{% endblock %}
+  </style>
+{% endblock css %}
 
 {% block container %}
 <div class="container">
@@ -71,7 +72,7 @@
 
 {% block js_body %}
   <script type="text/javascript">
-    function login(event) {
+    function register(event) {
         event.preventDefault();
 
         let password = $("#password").val()
