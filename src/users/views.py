@@ -150,10 +150,26 @@ class TenantSelect(APIView):
 class UserRegister(APIView):
     def post(self, request, *args, **kwargs):
         message = 'Successfully registered'
-        status = 200
+        status = 400
         response = {}
         data = request.data
-        print(data)
+        print(data) # {'email': 'cfd@gmail.com', 'password': 'test$147', 'tenant_name': 'cfd', 'contact': '7975797484'}
+
+        tenant_name = data.get('tenant_name')
+        tenant = Tenant.objects.filter(tenant_name=tenant_name).first()
+
+        try:
+            if tenant:
+                message = "Tenant is already registered"
+            else:
+                tenant = Tenant.objects.create(tenant_name=tenant_name)
+                response['data'] = {
+                    'id': tenant.pk,
+                    'tenant_name': tenant.tenant_name
+                }
+                status = 200
+        except Exception as error:
+            message = str(error)
 
         response['status'] = status
         response['message'] = message

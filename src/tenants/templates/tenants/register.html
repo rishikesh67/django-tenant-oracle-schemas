@@ -94,7 +94,7 @@
 
         let csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
         console.log(password, email, contact, tenant_name);
-        alert(csrfmiddlewaretoken)
+        // alert(csrfmiddlewaretoken)
 
         $.ajax({
            type: "POST",
@@ -113,7 +113,7 @@
            }),
            success: (response, textStatus, jQxhr) => {
               console.log(response, textStatus, jQxhr)
-              alert("success");
+              // alert("success");
               if(response.status == 200) {
                 let data = response.data;
 
@@ -144,12 +144,20 @@
                     }
                 })
               } else {
-                alert(response.message)
+                swal({
+                    'icon': 'warning',
+                    'title': 'Sorry!!!',
+                    'text': response.message
+                })
               }
            },
            error: (jQxhr, textStatus, errorThrown) => {
               console.log("Error", jQxhr, textStatus, errorThrown);
-              alert('Something bad happened, ' + errorThrown);
+                swal({
+                    'icon': 'warning',
+                    'title': 'Sorry!!!',
+                    'text': 'Something bad happened, ' + errorThrown
+                })
            }
         })
 
