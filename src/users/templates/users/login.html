@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Login</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+{% extends 'base.html' %}
 
+{% block css %}
   <style type="text/css">
     .form-control {
       border: 1px solid green;
@@ -19,10 +12,9 @@
     #nse-image {
       height: 50px;
     }
-  </style>
-</head>
-<body>
+{% endblock %}
 
+{% block container %}
 <div class="container">
     <div class="row">
       <div class="col-sm-10 col-sm-offset-1 col-xs-12 col-md-6 col-md-offset-3">
@@ -30,7 +22,7 @@
         <center>
           <img src="https://www.nseindia.com/global/resources/images/NSE_reverse@4x-100.jpg" class="img img-responsive img-rounded" id='nse-image'>
         </center>
-        <h3>NseInvestEase Login</h3>
+        <h3>NseInvestEase 5Login</h3>
         <hr>
         
         <div class="alert alert-success alert-dismissible">
@@ -75,68 +67,68 @@
         </div> 
     -->
 </div>
+{% endblock %}
+
+{% block js_body %}
+  <script type="text/javascript">
+    function login(event) {
+        event.preventDefault();
+
+        let password = $("#password").val()
+        let arn_code = $("#arn_code").val()
+        let appln_id = $("#appln_id").val()
+        let csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
+        console.log(password, arn_code, appln_id);
+        alert(csrfmiddlewaretoken)
+
+        $.ajax({
+           type: "POST",
+           url: location.pathname,
+           headers: {
+              "Content-Type": "application/json",
+              "X-CSRFtoken": csrfmiddlewaretoken
+           },
+           crossDomain: true,
+           dataType: "json",
+           data: JSON.stringify({
+            arn_code,
+            password,
+            appln_id
+           }),
+           success: (response, textStatus, jQxhr) => {
+              console.log(response, textStatus, jQxhr)
+              alert("success");
+              if(response.status == 200) {
+                let data = response.data;
+
+                url = `${data.scheme}://${data.tenant}.${data.domain}.${data.extension}`;
+
+                if(data.port) {
+                  url += `:${data.port}`;
+                }  else {
+                  alert('Bad happened')
+                  return
+                }
 
 
-<script type="text/javascript">
-  function login(event) {
-      event.preventDefault();
 
-      let password = $("#password").val()
-      let arn_code = $("#arn_code").val()
-      let appln_id = $("#appln_id").val()
-      let csrfmiddlewaretoken = $("input[name='csrfmiddlewaretoken']").val()
-      console.log(password, arn_code, appln_id);
-      alert(csrfmiddlewaretoken)
 
-      $.ajax({
-         type: "POST",
-         url: location.pathname,
-         headers: {
-            "Content-Type": "application/json",
-            "X-CSRFtoken": csrfmiddlewaretoken
-         },
-         crossDomain: true,
-         dataType: "json",
-         data: JSON.stringify({
-          arn_code,
-          password,
-          appln_id
-         }),
-         success: (response, textStatus, jQxhr) => {
-            console.log(response, textStatus, jQxhr)
-            alert("success");
-            if(response.status == 200) {
-              let data = response.data;
-
-              url = `${data.scheme}://${data.tenant}.${data.domain}.${data.extension}`;
-
-              if(data.port) {
-                url += `:${data.port}`;
-              }  else {
-                alert('Bad happened')
-                return
+                console.log("Redirect to Url => " + url);
+                location.href = url + '/dashboard';
+                console.log("OK");
+              } else {
+                alert("got");
               }
+           },
+           error: (jQxhr, textStatus, errorThrown) => {
+              console.log("Error", jQxhr, textStatus, errorThrown);
+              alert('' + errorThrown);
+           }
+        })
 
-
-
-
-              console.log("Redirect to Url => " + url);
-              location.href = url + '/dashboard';
-              console.log("OK");
-            } else {
-              alert("got");
-            }
-         },
-         error: (jQxhr, textStatus, errorThrown) => {
-            console.log("Error", jQxhr, textStatus, errorThrown);
-            alert('' + errorThrown);
-         }
-      })
-
-      return true;
-  } 
-</script>
-</body>
-</html>
+        return true;
+    } 
+  </script>
+{% endblock %}
 
 
