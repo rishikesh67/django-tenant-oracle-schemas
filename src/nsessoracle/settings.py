@@ -94,7 +94,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.oracle',
         'NAME': 'cfduat.c0be6oyqiohf.ap-south-1.rds.amazonaws.com:1521/orcl',
         'USER': 'cfdadmin',
-        'PASSWORD': 'pandora123$321#',
+        'PASSWORD': 'hr' # 'pandora123$321#',
         # 'TEST': {
         #     'USER': 'default_test',
         #     'TBLSPACE': 'default_test_tbls',

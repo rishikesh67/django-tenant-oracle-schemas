@@ -5,7 +5,7 @@ from users.models import User
 import logging
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.WARNING)
 
 class TenantMiddleware:
     """
@@ -15,13 +15,14 @@ class TenantMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        logger.debug('Inside TenantMiddleware')
-        logger.debug(request)
+        print('Inside TenantMiddleware')
+        print(request)
 
         # --- BEFORE ---
+        print('Getting tenant')
         is_main_domain, tenant = get_tenant(request)
-        logger.debug('TENANT - ' + tenant)
-        logger.debug('IS MAIN DOMAIN', is_main_domain)
+        print('TENANT - ', tenant)
+        print('IS MAIN DOMAIN', is_main_domain)
         print(is_main_domain, tenant, type(tenant))
 
         request.is_main_domain = is_main_domain
@@ -42,10 +43,12 @@ class TenantMiddleware:
                     print('no')
 
                 request.tenant = None
+        else:
+            request.tenant = None
 
         if is_main_domain:
             print('Is main domain')
-            if not request.path.startswith('/tests/register') and (not request.path.startswith('/tests/users/')) and (not (request.path == '/')):
+            if not request.path.startswith('/tests/register') and (not request.path.startswith('/tests/users/')) and (not (request.path == '/')) and (not request.path.startswith("/admin/")) :
                 return JsonResponse({
                     'status': 400,
                     "message": 'main domain is only allowed to register tenants not other activities'
