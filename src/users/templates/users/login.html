@@ -121,12 +121,12 @@
                 location.href = url
                 console.log("OK");
               } else {
-                alert("got");
+                alert(response.message)
               }
            },
            error: (jQxhr, textStatus, errorThrown) => {
               console.log("Error", jQxhr, textStatus, errorThrown);
-              alert('' + errorThrown);
+              alert('Something bad happened, ' + errorThrown);
            }
         })
 
