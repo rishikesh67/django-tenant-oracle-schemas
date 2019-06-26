@@ -12,6 +12,10 @@
     #nse-image {
       height: 60px;
     }
+
+    .form-control:hover {
+        border-color: blue;
+    }
   </style>
 {% endblock css %}
 
@@ -36,22 +40,22 @@
           {% csrf_token %}
           <div class="form-group">
             <label for="arn_code">ARN CODE:</label>
-            <input type="text" class="form-control" id="arn_code" placeholder="Enter ARN CODE" name="name" value="ARN-20709">
+            <input type="text" class="form-control" id="arn_code" placeholder="Enter ARN CODE" name="name" value="ARN-20709" data-toggle='tooltip' title='ARN-20709'>
           </div>
           
           <div class="form-group">
             <label for="appln_id">APPLN ID:</label>
-            <input type="appln_id" class="form-control" id="appln_id" placeholder="Enter Appln Id" name="appln_id" value="TEST854">
+            <input type="appln_id" class="form-control" id="appln_id" placeholder="Enter Appln Id" name="appln_id" value="TEST854" data-toggle='tooltip' title='APPLN ID'>
           </div> 
          
           <div class="form-group">
             <label for="password">Password:</label>
-            <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" value="test$147">
+            <input type="password" class="form-control" id="password" placeholder="Enter Password" name="password" value="test$147" data-toggle='tooltip' title='PASSWORD'>
           </div>
           <div class="checkbox">
-            <label><input type="checkbox" name="remember"> Remember me</label>
+            <label><input type="checkbox" name="remember" data-toggle='tooltip' title='Remember me'> Remember me</label>
           </div>
-          <button type="submit" class="btn btn-success btn-block">Submit</button>
+          <button type="submit" class="btn btn-success btn-block" data-toggle='tooltip' title='Login to MF'>Submit</button>
         </form>  
       </div>
 
@@ -103,20 +107,18 @@
               if(response.status == 200) {
                 let data = response.data;
 
-                url = `${data.scheme}://${data.tenant}.${data.domain}.${data.extension}`;
+                // url = `${data.scheme}://${data.tenant}.${data.domain}.${data.extension}`;
 
-                if(data.port) {
-                  url += `:${data.port}`;
-                }  else {
-                  alert('Bad happened')
-                  return
-                }
+                // if(data.port) {
+                //   url += `:${data.port}`;
+                // }  else {
+                //   alert('Bad happened')
+                //   return
+                // }
 
-
-
-
-                console.log("Redirect to Url => " + url);
-                location.href = url + '/dashboard';
+                url = '/tests/users/select/tenant'
+                console.log("Redirect to Url => ", url);
+                location.href = url
                 console.log("OK");
               } else {
                 alert("got");
@@ -131,6 +133,7 @@
         return true;
     } 
   </script>
+
 {% endblock %}
 
 

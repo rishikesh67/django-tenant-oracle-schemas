@@ -130,3 +130,18 @@ class UserLogin(APIView):
     def get(self, request, *args, **kwargs):
         return render(request, "users/login.html", {})
 
+
+
+class TenantSelect(APIView):
+    def post(self, request, *args, **kwargs):
+        pass
+
+    def get(self, request, *args, **kwargs):
+
+        tenants = Tenant.objects.all()
+        context = {
+            'tenants': tenants
+        }
+
+        print('Tenants ', tenants)
+        return render(request, 'tenants/tenant_select.html', context)        

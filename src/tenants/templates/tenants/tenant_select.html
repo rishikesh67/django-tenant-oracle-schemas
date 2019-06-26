@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+
+{% block container %}
+	
+	<div class="container">
+		{% for tenant in tenants %}
+		<div class="col-md-4 col-xs-12">
+				<a href="http://{{tenant.tenant_name}}.nseinvestease">http://{{tenant.tenant_name}}.nseinvestease</a>
+		</div>
+		{% endfor %}
+	</div>
+
+{% endblock %}

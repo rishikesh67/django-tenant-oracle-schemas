@@ -48,7 +48,7 @@ class TenantMiddleware:
 
         if is_main_domain:
             print('Is main domain')
-            if not request.path.startswith('/tests/register') and (not request.path.startswith('/tests/users/')) and (not (request.path == '/')) and (not request.path.startswith("/admin/")) :
+            if not request.path.startswith('/tests/register') and (not request.path.startswith('/tests/users/')) and (not (request.path == '/')) and (not request.path.startswith("/admin/")) and (not request.path.startswith('/register/')) :
                 return JsonResponse({
                     'status': 400,
                     "message": 'main domain is only allowed to register tenants not other activities'

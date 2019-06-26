@@ -45,5 +45,12 @@
     {% include 'footer.html' %}
     {% block js_body %}
     {% endblock js_body %}
+
+
+    <script>
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip(); 
+    });
+    </script>
   </body>
 </html>
