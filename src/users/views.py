@@ -75,6 +75,11 @@ class UserLogin(APIView):
                         "created": str(datetime.now())
                     }, "^NseSecret@123$", algorithm="HS256").decode('utf8')
 
+        # token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjE0NjU3MDQsImlzcyI6Imh0dHBzOi8vd3d3Lm5zZWluZGlhLmluIiwiYXJuX2NvZGUiOiJBUk4tNzAyMDkiLCJhcHBsbl9pZCI6IlRFU1Q4NTQiLCJuc2VfYXBpX3Jlc3BvbnNlIjp7IlNlc3Npb25JRCI6Ik1GU3xURVNUODU0Tk1GSUlTRVNTSU9OVkFMSURBVEVBUEkwNTIzNDMyMzI3NjM0IiwiU3RhdHVzIjoiU3VjY2VzcyIsIkVycm9yX2NvZGUiOiIwMCIsIkRhdGVUaW1lIjoiMjUwNjIwMTkxNzQzMjQifX0.Z921u-qYku5f7dUGBmA5uuY8lXAQohEd1P18JI_mZyg"
+        # token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjE0NjgzMDAsImlzcyI6Imh0dHBzOi8vd3d3Lm5zZWluZGlhLmluIiwiYXJuX2NvZGUiOiJBUk4tNzAyMDkiLCJhcHBsbl9pZCI6IlRFU1Q4NTQiLCJuc2VfYXBpX3Jlc3BvbnNlIjp7IlNlc3Npb25JRCI6Ik1GU3xURVNUODU0Tk1GSUlTRVNTSU9OVkFMSURBVEVBUEkwNjQwMjY0MDM3NDM5IiwiU3RhdHVzIjoiU3VjY2VzcyIsIkVycm9yX2NvZGUiOiIwMCIsIkRhdGVUaW1lIjoiMjUwNjIwMTkxODI2NDAifX0.IoIRdO4MoSBzSaB4oF7AGlfMunVkA4aQ-cpdX4slSIQ'
+        
+        # 540 (9 hours from 10:20)
+        token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjE1NTcwNDQsImlzcyI6Imh0dHBzOi8vd3d3Lm5zZWluZGlhLmluIiwiYXJuX2NvZGUiOiJBUk4tNzAyMDkiLCJhcHBsbl9pZCI6IlRFU1Q4NTQiLCJuc2VfYXBpX3Jlc3BvbnNlIjp7IlNlc3Npb25JRCI6Ik1GU3xURVNUODU0Tk1GSUlTRVNTSU9OVkFMSURBVEVBUEkxMDQzMjA0MzI2NjY2IiwiU3RhdHVzIjoiU3VjY2VzcyIsIkVycm9yX2NvZGUiOiIwMCIsIkRhdGVUaW1lIjoiMjYwNjIwMTkxMDIwNDMifX0.HHejkGs8TtpuW3HUK1an3aFClrDvqJYQIc1Tzjy81kw'
         try:
             if True:
             # if clients.exists():

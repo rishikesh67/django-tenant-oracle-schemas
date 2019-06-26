@@ -8,6 +8,9 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 class TenantMiddleware:
+    """
+    Tenant Middleware
+    """
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -41,16 +44,19 @@ class TenantMiddleware:
                 request.tenant = None
 
         if is_main_domain:
+            print('Is main domain')
             if not request.path.startswith('/tests/register') and (not request.path.startswith('/tests/users/')) and (not request.path == '/'):
                 return JsonResponse({
                     'status': 400,
                     "message": 'main domain is only allowed to register tenants not other activities'
                 })
-        elif not tenant:
-            return JsonResponse({
-                'status': 400,
-                "message": 'Could not find this tenant'
-            })
+        elif not request.tenant:
+            # print('Not a tenant')
+            
+            # return JsonResponse({
+            #     'status': 400,
+            #     "message": 'Could not find this tenant'
+            # })
 
         print('Tenant is set as ', request.tenant, request.is_local_domain, request.is_main_domain)
 

@@ -22,7 +22,7 @@
 <div class="container">
     <div class="row">
       <div class="col-sm-10 col-sm-offset-1 col-xs-12 col-md-6 col-md-offset-3">
-        <h3>Login</h3>
+        <h3>nseinvestease Login</h3>
         <hr>
         <form action="#" onsubmit="return login(event)">
           {% csrf_token %}
@@ -93,14 +93,17 @@
               url = `${data.scheme}://${data.tenant}.${data.domain}.${data.extension}`;
 
               if(data.port) {
-                url += `:${data.port}?token=${data.token}`;
-              } else {
-                alert("No data port")
+                url += `:${data.port}`;
+              }  else {
+                alert('Bad happened')
                 return
               }
 
+
+
+
               console.log("Redirect to Url => " + url);
-              location.href = url;
+              location.href = url + '/dashboard';
               console.log("OK");
             } else {
               alert("got");
