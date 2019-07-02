@@ -150,3 +150,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
 
 
 REDIRECT_PORT = 8000
+REDIRECT_DOMAIN = 'nseinvestease'
+SESSION_COOKIE_DOMAIN = "." + REDIRECT_DOMAIN

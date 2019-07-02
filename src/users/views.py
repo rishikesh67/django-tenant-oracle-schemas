@@ -60,7 +60,6 @@ class UsersView(APIView):
         return Response(response)
 
 
-
 class UserLogin(APIView):
     def post(self, request, *args, **kwargs):
         status, message, response = 400, 'Successfully logged in', {}
@@ -94,7 +93,9 @@ class UserLogin(APIView):
         # token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjE0NjgzMDAsImlzcyI6Imh0dHBzOi8vd3d3Lm5zZWluZGlhLmluIiwiYXJuX2NvZGUiOiJBUk4tNzAyMDkiLCJhcHBsbl9pZCI6IlRFU1Q4NTQiLCJuc2VfYXBpX3Jlc3BvbnNlIjp7IlNlc3Npb25JRCI6Ik1GU3xURVNUODU0Tk1GSUlTRVNTSU9OVkFMSURBVEVBUEkwNjQwMjY0MDM3NDM5IiwiU3RhdHVzIjoiU3VjY2VzcyIsIkVycm9yX2NvZGUiOiIwMCIsIkRhdGVUaW1lIjoiMjUwNjIwMTkxODI2NDAifX0.IoIRdO4MoSBzSaB4oF7AGlfMunVkA4aQ-cpdX4slSIQ'
         
         # 540 (9 hours from 10:20)
-        token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjE1NTcwNDQsImlzcyI6Imh0dHBzOi8vd3d3Lm5zZWluZGlhLmluIiwiYXJuX2NvZGUiOiJBUk4tNzAyMDkiLCJhcHBsbl9pZCI6IlRFU1Q4NTQiLCJuc2VfYXBpX3Jlc3BvbnNlIjp7IlNlc3Npb25JRCI6Ik1GU3xURVNUODU0Tk1GSUlTRVNTSU9OVkFMSURBVEVBUEkxMDQzMjA0MzI2NjY2IiwiU3RhdHVzIjoiU3VjY2VzcyIsIkVycm9yX2NvZGUiOiIwMCIsIkRhdGVUaW1lIjoiMjYwNjIwMTkxMDIwNDMifX0.HHejkGs8TtpuW3HUK1an3aFClrDvqJYQIc1Tzjy81kw'
+        # token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjE1NTcwNDQsImlzcyI6Imh0dHBzOi8vd3d3Lm5zZWluZGlhLmluIiwiYXJuX2NvZGUiOiJBUk4tNzAyMDkiLCJhcHBsbl9pZCI6IlRFU1Q4NTQiLCJuc2VfYXBpX3Jlc3BvbnNlIjp7IlNlc3Npb25JRCI6Ik1GU3xURVNUODU0Tk1GSUlTRVNTSU9OVkFMSURBVEVBUEkxMDQzMjA0MzI2NjY2IiwiU3RhdHVzIjoiU3VjY2VzcyIsIkVycm9yX2NvZGUiOiIwMCIsIkRhdGVUaW1lIjoiMjYwNjIwMTkxMDIwNDMifX0.HHejkGs8TtpuW3HUK1an3aFClrDvqJYQIc1Tzjy81kw'
+        token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjE2NDI4NzAsImlzcyI6Imh0dHBzOi8vd3d3Lm5zZWluZGlhLmluIiwiYXJuX2NvZGUiOiJBUk4tNzAyMDkiLCJhcHBsbl9pZCI6IlRFU1Q4NTQiLCJuc2VfYXBpX3Jlc3BvbnNlIjp7IlNlc3Npb25JRCI6Ik1GU3xURVNUODU0Tk1GSUlTRVNTSU9OVkFMSURBVEVBUEkxMDA5MTE5OTc4MzUiLCJTdGF0dXMiOiJTdWNjZXNzIiwiRXJyb3JfY29kZSI6IjAwIiwiRGF0ZVRpbWUiOiIyNzA2MjAxOTEwMTExMCJ9fQ.C7Lamz8G225rkDsjD4s_chVHn_uaP8XB20L-m49sEfU'
+
         try:
             if True:
             # if clients.exists():
@@ -103,9 +104,9 @@ class UserLogin(APIView):
                 response["data"] = {
                     "scheme": "http", # https/http
                     "tenant": 'cfd',
-                    "domain": "nseinvestease",
-                    "port": 8000,
-                    "extension": "com",
+                    # "domain": settings.REDIRECT_DOMAIN,
+                    # "port": settings.REDIRECT_PORT,
+                    # "extension": "com",
                     "token": token
                 }
                 # ^Nse+Secret~Money#bloom@123$
@@ -123,7 +124,16 @@ class UserLogin(APIView):
         response = JsonResponse(response)
 
         if status == 200:
-            response.set_cookie('token', token, domain='nseinvestease.com')
+            # https://stackoverflow.com/questions/18492576/share-cookie-between-subdomain-and-domain
+            print('REDIRECT_DOMAIN ',settings.REDIRECT_DOMAIN)
+            domain = '.'+ settings.REDIRECT_DOMAIN
+            response.set_cookie('token', token)
+            # response.set_cookie('token', token, domain=domain.lstrip('.'))
+            print('Set cookie for this domain', domain)
+
+            # response.set_cookie('cfd_tuts', 'cfd@gmail.com', domain='.tutorialspoint.com')
+            # response.set_cookie('cfd_tuts', 'cfd@gmail.com', domain='.tutorialspoint.com')
+            print('Set cookie for .tutorialspoint')
 
         return response
 
@@ -138,15 +148,18 @@ class TenantSelect(APIView):
         pass
 
     def get(self, request, *args, **kwargs):
-
+        print('Tenant select screen')
         tenants = Tenant.objects.all()
         port = settings.REDIRECT_PORT
+        domain = settings.REDIRECT_DOMAIN
 
         context = {
             'tenants': tenants,
-            'port': port
+            'port': port,
+            'domain': domain
         }
         print('Tenants ', tenants)
+
         return render(request, 'tenants/tenant_select.html', context)   
 
 
@@ -170,7 +183,7 @@ class UserRegister(APIView):
                     'id': tenant.pk,
                     'tenant_name': tenant.tenant_name
                 }
-                status = 200
+                status = 200 # SUCCESS
         except Exception as error:
             message = str(error)
 
@@ -180,6 +193,4 @@ class UserRegister(APIView):
 
     def get(self, request, *args, **kwargs):
         context = {}
-        return render(request, 'tenants/register.html', context)   
-
-
+        return render(request, 'tenants/register.html', context)

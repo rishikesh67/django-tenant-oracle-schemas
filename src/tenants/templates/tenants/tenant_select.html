@@ -1,11 +1,7 @@
 {% extends 'base.html' %}
 
-
-
 {% block container %}
-	
 	<div class="container">
-
 				    <br>
         			<hr>
         			<div class="row text-center">
@@ -33,7 +29,7 @@
 									    <p>Visit and invest on MF through <b>{{tenant.tenant_name}}</b></p>
 									    
 									    <p data-toggle="tooltip" title="Visit {{tenant.tenant_name}}">
-									    	<a href="http://{{tenant.tenant_name}}.nseinvestease:{{port}}" class="btn btn-success btn-block btn-lg" role="button">Visit {{tenant.tenant_name}}
+									    	<a href="http://{{tenant.tenant_name}}.{{domain}}:{{port}}/dashboard" class="btn btn-success btn-block btn-lg" role="button">Visit {{tenant.tenant_name}}
 									    	</a>
 									    </p>
 									  </div>
