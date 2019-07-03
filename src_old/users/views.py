@@ -10,9 +10,10 @@ import jwt
 from django.http import JsonResponse
 from tenants.models import Tenant
 from django.conf import settings
+from nsessoracle.mixins import TenantDataMixin
 
 
-class UsersView(APIView):
+class UsersView(APIView, TenantDataMixin):
     def post(self, request, *args, **kwargs):
         status, message, response = 400, 'Successfully created user', {}
         data = request.data
@@ -47,7 +48,9 @@ class UsersView(APIView):
         data = request.data
 
         try:
-            users = User.objects.filter(tenant_name=request.tenant)
+            # users = User.objects.filter(tenant_name=request.tenant)
+            users = self.get_data(request, User, many=True)
+
             serializer = UserSerializer(users, many=True)
             response["data"] = serializer.data
             status = 200
