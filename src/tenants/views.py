@@ -6,6 +6,11 @@ from .serializers import TenantSerializer
 import logging
 
 
+# FORMAT = '%(asctime)-15s %(clientip)s %(user)-8s %(message)s'
+# logging.basicConfig(format=FORMAT)
+
+logger = logging.getLogger(__name__)
+
 class TenantRegister(APIView):
 
 	def post(self, request, *args, **kwargs):
