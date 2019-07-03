@@ -125,3 +125,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/2.2/howto/static-files/
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'root')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static', 'files'),
+)
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
+
+
+REDIRECT_PORT = 8000
+REDIRECT_DOMAIN = 'nseinvestease'
+
+# SESSION_COOKIE_DOMAIN = "." + REDIRECT_DOMAIN
+
+# SITE_ID = 1
