@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'wr#!$0ruyhj&$lmzdju-hge28@+@3(vy&!c0c@-_gqjx)12c2+'
+SECRET_KEY = 'c)+$w)&&#fi_7ry%^iqc=fq%z95shtlfxn3y4kn%%7!d1af!^&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,9 +40,8 @@ INSTALLED_APPS = [
 
     'tenants.apps.TenantsConfig',
     'users.apps.UsersConfig',
-    'tests.apps.TestsConfig',
 
-    'rest_framework'
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -62,7 +61,7 @@ ROOT_URLCONF = 'nsessoracle.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,27 +80,13 @@ WSGI_APPLICATION = 'nsessoracle.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'cfduat.c0be6oyqiohf.ap-south-1.rds.amazonaws.com:1521/orcl',
-        'USER': 'cfdadmin',
-        'PASSWORD': 'hr' # 'pandora123$321#',
-        # 'TEST': {
-        #     'USER': 'default_test',
-        #     'TBLSPACE': 'default_test_tbls',
-        #     'TBLSPACE_TMP': 'default_test_tbls_tmp',
-        # }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -140,6 +125,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/2.2/howto/static-files/
+
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'root')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static', 'files'),
@@ -151,4 +141,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
 
 REDIRECT_PORT = 8000
 REDIRECT_DOMAIN = 'nseinvestease'
-SESSION_COOKIE_DOMAIN = "." + REDIRECT_DOMAIN
+
+# SESSION_COOKIE_DOMAIN = "." + REDIRECT_DOMAIN
+
+# SITE_ID = 1

@@ -2,16 +2,24 @@ from django.db import models
 import uuid
 import logging
 from nsessoracle.utils import get_connection 
-from tests.makemigrations_and_migrate import makemigrations_and_migrate
+# from tests.makemigrations_and_migrate import makemigrations_and_migrate
 import os
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
+
+class TenantManager(models.Manager):
+    def get_queryset(self):
+        print("Inside Model Manager's Code")
+        tenant_users = User.objects.filter(tenant_name=request.tenant)
+        return tenant_users
+
+
 class Tenant(models.Model):
     # pk => tenant.Tenant.pk: (fields.E003) 'pk' is a reserved word that cannot be used as a field name.
-    id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    tenant_name = models.CharField(max_length=20, null=False, blank=True, help_text='Tenant name', unique=True)
+    id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4) # Primary key
+    tenant_name = models.CharField(max_length=15, null=False, blank=True, help_text='Tenant name', unique=True) # Tenant name
     # created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     # updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
 
